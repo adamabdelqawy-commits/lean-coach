@@ -191,7 +191,7 @@ async function askAI(v){
 function send(){var v=$("inp").value.trim();if(!v||busy)return;$("inp").value="";add(v,true);
   if(!S.aiUrl){setTimeout(function(){add(brain(v),false);add("💡 للرد الذكي على أي سؤال: افتح Progress وحط رابط سيرفر الـ AI.",false)},350);return;}
   busy=true;var w=document.createElement("div");w.className="m";w.textContent="...";$("msgs").appendChild(w);$("msgs").scrollTop=1e9;
-  askAI(v).then(function(t){w.remove();add(t,false)}).catch(function(){w.remove();add(brain(v),false);add("⚠️ السيرفر مش بيرد، ده رد أوفلاين.",false)}).then(function(){busy=false});}
+  askAI(v).then(function(t){w.remove();add(t,false)}).catch(function(e){w.remove();var m=String(e&&e.message||e);add("⚠️ مشكلة في الـ AI (مش أوفلاين):\n"+m+(/api-key|auth/i.test(m)?"\n→ مفتاح الـ API غلط. اعمل مفتاح جديد وحطه في Cloudflare.":/credit|billing/i.test(m)?"\n→ الحساب محتاج رصيد في console.anthropic.com.":/fetch|network/i.test(m)?"\n→ تأكد من رابط الـ Worker في Progress.":""),false)}).then(function(){busy=false});}
 function renderToday(){
   renderRem();
   if(!$("todayBox"))return;
